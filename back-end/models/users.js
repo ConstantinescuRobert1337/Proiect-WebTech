@@ -12,6 +12,11 @@ export const login = db.define('login', {
         allowNull: false,
         unique: true
     },
+    email:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
     password: {
         type: DataTypes.TEXT,
         allowNull: false
@@ -25,7 +30,7 @@ export const login = db.define('login', {
         indexes: [
             {
                 unique: true,
-                fields: ['username']
+                fields: ['username', 'email'],
             }
         ]
     });
