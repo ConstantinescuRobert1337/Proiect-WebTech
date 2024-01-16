@@ -7,4 +7,3 @@ export const getNotes = async (req, res) => {
     const notesList = await notes.findAll({ where: where });
     res.status(200).send({records: notesList});
 }
-
