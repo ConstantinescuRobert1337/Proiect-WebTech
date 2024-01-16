@@ -1,11 +1,38 @@
 import React, { useState } from "react"
 import "./LoginSignup.css"
+import { useNavigate } from "react-router-dom";
+
+
 
 import user_icon from "../Assets/person.png"
 import email_icon from "../Assets/email.png"
 import password_icon from "../Assets/password.png"
 
 const LoginSignup = () => {
+    
+    console.log("LoginSignup component rendered");
+
+    const navigate = useNavigate();
+
+    const handleSignUpClick = () => {
+        if (action === "Login") {
+          setAction("Sign Up");
+        } else {
+          
+          navigate("/home");
+      
+          
+        }}
+
+        const handleLoginClick = () => {
+            if (action === "Sign Up") {
+              setAction("Login");
+            } else {
+              
+            
+            navigate("/home");
+        
+            }}
 
     const [action,setAction] = useState("Login");
 
@@ -32,8 +59,10 @@ const LoginSignup = () => {
         </div>
         {action ==="Sign Up"?<div></div>:<div className="forgot-password">Forgot your password? <span>Click here!</span></div>}
         <div className="submit-container">
-            <div className={action ==="Login"?"submit gray":"submit"} onClick={()=>{setAction("Sign Up")}}>Sign Up</div>
-            <div className={action ==="Sign Up"?"submit gray":"submit"}onClick={()=>{setAction("Login")}}>Login</div>
+            <div className={action ==="Login"?"submit gray":"submit"}
+             onClick={handleSignUpClick}>Sign Up</div>
+            <div className={action ==="Sign Up"?"submit gray":"submit"}
+            onClick={handleLoginClick}>Login</div>
         </div>
     </div>
   )
