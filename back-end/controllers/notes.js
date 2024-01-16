@@ -6,6 +6,7 @@ export const getNotes = async (req, res) => {
     const where = titleQuery ? { noteTitle: { [Op.like]: `%${titleQuery}%` } } : {};
     const notesList = await notes.findAll({ where: where });
     res.status(200).send({records: notesList});
+<<<<<<< HEAD
 }
 
 export const getNoteById = async (req, res) => {
@@ -47,3 +48,6 @@ export const deleteNote = async (req, res) => {
 
 
 
+=======
+}
+>>>>>>> 90453e5c1bc0d73805cc485016dba5e7575dd592
