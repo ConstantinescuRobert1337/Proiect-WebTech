@@ -1,8 +1,7 @@
-
 import "./App.css";
-import LoginSignup from './Components/LoginSignup/LoginSignup';
-import HomePage from './Components/Home/HomePage';
-import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import LoginSignup from "./Components/LoginSignup/LoginSignup";
+import HomePage from "./pages/HomePage";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
@@ -16,4 +15,3 @@ function App() {
 }
 
 export default App;
- 
