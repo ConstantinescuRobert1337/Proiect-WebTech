@@ -1,49 +1,59 @@
 import axios from "axios";
-// import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NotesList from "../Components/NotesList";
 import "./HomePage.css";
-import { useState } from "react";
+import Search from "../Components/Search";
 import { nanoid } from "nanoid";
 
-const HomePage = () => {
-  const [notes, setNotes] = useState([
-    {
-      id: nanoid(),
-      text: "This is my first note!",
-      date: "17/01/2024",
-    },
-    {
-      id: nanoid(),
-      text: "This is my second note!",
-      date: "18/01/2024",
-    },
-    {
-      id: nanoid(),
-      text: "This is my third note!",
-      date: "20/01/2024",
-    },
-    {
-      id: nanoid(),
-      text: "This is my new note!",
-      date: "19/01/2024",
-    },
-  ]);
+const SERVER_URL = "http://localhost:3000";
 
-  const addNote = (text) => {
+const HomePage = () => {
+  const [notes, setNotes] = useState([]);
+  const getNotes = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/notes`);
+      setNotes(response.data.records);
+    } catch (error) {
+      console.error(
+        "Eroare la luare notita:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+
+  useEffect(() => {
+    getNotes();
+  }, []);
+
+  const [searchText, setSearchText] = useState("");
+
+  const addNote = async (text) => {
     const date = new Date();
     const newNote = {
-      id: nanoid(),
-      text: text,
-      date: date.toLocaleDateString(),
+      noteBody: text,
+      noteDate: date.toLocaleDateString(),
     };
-    const newNotes = [...notes, newNote];
+    await axios.post(`${SERVER_URL}/notes`, newNote).then((response) => {
+      setNotes([...notes, { ...newNote, noteId: response.data.noteId }]);
+    });
+  };
+
+  const deleteNote = (id) => {
+    const newNotes = notes.filter((note) => note.noteId !== id);
     setNotes(newNotes);
   };
 
   return (
     <div className="container-note">
-      <NotesList notes={notes} handleAddNote={addNote} />
+      <Search handleSearchNote={setSearchText} />
+      <NotesList
+        notes={notes.filter((note) =>
+          note.noteBody.toLowerCase().includes(searchText)
+        )}
+        handleAddNote={addNote}
+        handleDeleteNote={deleteNote}
+      />
     </div>
   );
 };
