@@ -13,15 +13,19 @@ const getUserByEmail = async (email) => {
       }
 };
 
-const comparePasswords = async (password, hash) => {
-    try {
-        const match = await bcrypt.compare(password, hash);
-        return match;
-      } catch (error) {
-        console.error(error);
-        return false;
-      }
+
+const comparePasswords = async (password) => {
+  try {
+    const match = await bcrypt.compare(password, user.password);
+    return match;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
+
+
+
 
 const authMiddleware = async (req, res, next) => {
   const { email, password } = req.body;

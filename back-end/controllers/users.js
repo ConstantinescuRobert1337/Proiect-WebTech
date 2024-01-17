@@ -1,24 +1,30 @@
 import { Op } from "sequelize";
 import { User } from "../models/users.js";
-import bcrypt from 'bcrypt';
+
+
+const getUserByEmail = async (req,res) => {
+    const email = req.params.email;
+    const user = await User.findOne({ where: { email: email } });
+    if (user) {
+        res.status(200).send(user);
+    } else {
+        res.status(404).send({ message: `Nu am găsit niciun utilizator cu adresa de email ${email}.` });
+    }
+}
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+  console.log("am ajuns aici")
+  const { email, password } = req.body;
 
   try {
+  
     const user = await User.findOne({ where: { email } });
 
-    if (!user) {
-      return res.status(401).json({ message: 'Autentificare eșuată: utilizatorul nu există.' });
+    if (user && user.password === password) {
+      res.status(200).json({ message: 'Autentificare reușită!' });
+    } else {
+      res.status(401).json({ message: 'Adresa de email sau parola incorectă.' });
     }
-
-    const passwordMatches = await bcrypt.compare(password, user.password);
-
-    if (!passwordMatches) {
-      return res.status(401).json({ message: 'Autentificare eșuată: parola este incorectă.' });
-    }
-
-    res.json({ message: 'Autentificare reușită!', user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'A apărut o eroare la autentificare.' });
@@ -34,7 +40,7 @@ const getUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
     const userId = req.params.userId;
-    const user = await users.findOne({ where: { userId: userId } });
+    const user = await User.findOne({ where: { userId: userId } });
     if (user) {
         res.status(200).send(user);
     } else {
@@ -84,6 +90,7 @@ const deleteUser = async (req, res) => {
 export{
     login,
     getUsers,
+    getUserByEmail,
     getUserById,
     createUser,
     updateUser,

@@ -14,18 +14,22 @@ const LoginSignup = () => {
         const [name, setName] = useState("");
         const [email, setEmail] = useState("");
         const [password, setPassword] = useState("");
-        const addUser = (name, email, password) => {
-                const user = {
-                        username: name,
+        const addUser = async (name, email, password) => {
+                try {
+                    const user = {
+                        name: name,
                         email: email,
                         password: password,
                         accountType: "user"
+                    };
+            
+                    const response = await axios.post(`${SERVER_URL}/users/signup`, user);
+                    console.log(response.data);
+                } catch (error) {
+                    console.error('Eroare la înregistrare:', error.response ? error.response.data : error.message);
                 }
-
-                axios.post(`${SERVER_URL}/users/signup`, {user}).catch((error) => {
-                        console.log(error);
-                });
-        };
+            };
+            
         console.log("LoginSignup component rendered");
 
         const navigate = useNavigate();
@@ -34,37 +38,42 @@ const LoginSignup = () => {
                 if (action === "Login") {
                     setAction("Sign Up");
                 } else {
+                        if (!email.endsWith('@stud.ase.ro')) {
+                                alert('Eroare la înregistrare: Adresa de email trebuie să fie de tipul stud.ase.ro');
+                                return;}
+                              else{
                         addUser(name, email, password);
-                    navigate("/home");
+                    navigate("/home");}
                 }
         }
 
         const handleLoginClick = async () => {
-            if (action === "Sign Up") {
-              setAction("Login");
-            } else {
-              try {
-                const response = await axios.post('/users/login', {
-                  email: 'email_utilizator',
-                  password: 'parola_utilizator'
-                });
-          
-                console.log(response.data);
-              } catch (error) {
-                if (error.response) {
-                  console.error('Eroare la autentificare:', error.response.data);
+                if (action === "Sign Up") {
+                  setAction("Login");
                 } else {
-                  console.error('Eroare la autentificare:', error.message);
+                  try {
+                    const response = await axios.post(`${SERVER_URL}/users/login`, {
+                      email: email,
+                      password: password,
+                    });
+              
+                    const user = response.data;
+                    
+                    
+                      navigate("/home");
+                    }
+                   catch (error) {
+                    alert('Eroare la autentificare: Adresa de email nu există sau alte probleme');
+                  }
                 }
-              }
-              navigate("/home");
-            }
-          };
+              };
+              
           
           
         const [action,setAction] = useState("Login");
 
     return (
+        <form>
         <div className="container">
                 <div className="header">
                         <div className="text">{action}</div>
@@ -93,6 +102,7 @@ const LoginSignup = () => {
                         onClick={handleLoginClick}>Login</div>
                 </div>
         </div>
+        </form>
     )
 }
 
