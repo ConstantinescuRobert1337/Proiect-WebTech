@@ -53,9 +53,7 @@ export const deleteNote = async (req, res) => {
   const noteId = req.params.noteId;
   const deletedNote = await Note.destroy({ where: { noteId: noteId } });
   if (deletedNote) {
-    res
-      .status(200)
-      .send({ message: `Nota cu id-ul ${noteId} a fost ștearsă.` });
+    res.status(200).send({ message: `Nota a fost ștearsă.` });
   } else {
     res
       .status(404)

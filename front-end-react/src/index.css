@@ -64,6 +64,7 @@ textarea:focus {
   flex-direction: column;
   justify-content: space-between;
   white-space: pre-wrap;
+  max-height: 170px;
 }
 
 .note-footer {
@@ -82,7 +83,9 @@ textarea:focus {
   background-color: rgb(233, 233, 233);
   border-radius: 10px;
   padding: 5px;
-  margin-bottom: 1.5em;
+  margin-top: 10px;
+  margin-bottom: 1em;
+  flex: 1;
 }
 
 .search input {
@@ -93,4 +96,20 @@ textarea:focus {
 
 .search input:focus {
   outline: none;
+}
+
+#textNotite {
+  max-height: 150px; /* sau orice altă valoare potrivită */
+  overflow-y: auto;
+}
+
+.logout {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  margin-left: 10px;
 }
