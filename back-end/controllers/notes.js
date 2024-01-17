@@ -1,17 +1,17 @@
 import { Op } from "sequelize";
-import { notes } from "../models/notes.js";
+import { Note } from "../models/notes.js";
 
 export const getNotes = async (req, res) => {
     const titleQuery = req.query.title;
     const where = titleQuery ? { noteTitle: { [Op.like]: `%${titleQuery}%` } } : {};
-    const notesList = await notes.findAll({ where: where });
+    const notesList = await Note.findAll({ where: where });
     res.status(200).send({records: notesList});
-<<<<<<< HEAD
+
 }
 
 export const getNoteById = async (req, res) => {
     const noteId = req.params.noteId;
-    const note = await notes.findOne({ where: { noteId: noteId } });
+    const note = await Note.findOne({ where: { noteId: noteId } });
     if (note) {
         res.status(200).send(note);
     } else {
@@ -21,14 +21,14 @@ export const getNoteById = async (req, res) => {
 
 export const createNote = async (req, res) => {
     const note = req.body;
-    const newNote = await notes.create(note);
-    res.status(201).send(newNote);
+    await Note.create(note);
+    res.status(201).send({ message: `Nota cu id-ul ${note.noteId} a fost creată.` });
 }
 
 export const updateNote = async (req, res) => {
     const noteId = req.params.noteId;
     const note = req.body;
-    const updatedNote = await notes.update(note, { where: { noteId: noteId } });
+    const updatedNote = await Note.update(note, { where: { noteId: noteId } });
     if (updatedNote) {
         res.status(200).send({ message: `Nota cu id-ul ${noteId} a fost actualizată.` });
     } else {
@@ -38,7 +38,7 @@ export const updateNote = async (req, res) => {
 
 export const deleteNote = async (req, res) => {
     const noteId = req.params.noteId;
-    const deletedNote = await notes.destroy({ where: { noteId: noteId } });
+    const deletedNote = await Note.destroy({ where: { noteId: noteId } });
     if (deletedNote) {
         res.status(200).send({ message: `Nota cu id-ul ${noteId} a fost ștearsă.` });
     } else {
@@ -48,6 +48,4 @@ export const deleteNote = async (req, res) => {
 
 
 
-=======
-}
->>>>>>> 90453e5c1bc0d73805cc485016dba5e7575dd592
+

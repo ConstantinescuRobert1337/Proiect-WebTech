@@ -1,7 +1,7 @@
-import {db} from './config.js';
+import {database} from './config.js';
 import { DataTypes } from 'sequelize';
 
-export const notes = db.define('notes', {
+export const Note = database.define('notes', {
     noteId:{
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -18,11 +18,11 @@ export const notes = db.define('notes', {
     },
     noteBody: {
         type: DataTypes.TEXT,
-        allowNull: false
+        allowNull: true
     },
     noteDate: {
         type: DataTypes.DATE,
-        allowNull: false
+        allowNull: true
     },
     noteStatus: {
         type: DataTypes.ENUM('active', 'inactive'),
