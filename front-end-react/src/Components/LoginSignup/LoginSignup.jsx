@@ -7,9 +7,25 @@ import axios from "axios";
 import user_icon from "../Assets/person.png"
 import email_icon from "../Assets/email.png"
 import password_icon from "../Assets/password.png"
+const SERVER_URL = 'http://localhost:3000';
+
 
 const LoginSignup = () => {
-        
+        const [name, setName] = useState("");
+        const [email, setEmail] = useState("");
+        const [password, setPassword] = useState("");
+        const addUser = (name, email, password) => {
+                const user = {
+                        username: name,
+                        email: email,
+                        password: password,
+                        accountType: "user"
+                }
+
+                axios.post(`${SERVER_URL}/users/signup`, {user}).catch((error) => {
+                        console.log(error);
+                });
+        };
         console.log("LoginSignup component rendered");
 
         const navigate = useNavigate();
@@ -18,6 +34,7 @@ const LoginSignup = () => {
                 if (action === "Login") {
                     setAction("Sign Up");
                 } else {
+                        addUser(name, email, password);
                     navigate("/home");
                 }
         }
@@ -54,18 +71,18 @@ const LoginSignup = () => {
                         <div className="underline"></div>
                 </div>
                 <div className="inputs">
-                        {action ==="Login"?"":<div className="input">
+                        {action ==="Login"?"":<div className="input" >
                                 <img src={user_icon} alt="" />
-                                <input type="text" placeholder="Name" />
+                                <input type="text" placeholder="Name" value={name} onChange= { (e)=> setName(e.target.value)}/>
                         </div>}
                         
-                        <div className="input">
+                        <div className="input" >
                                 <img src={email_icon} alt="" />
-                                <input type="text" placeholder="Email" />
+                                <input type="text" placeholder="Email" value={email} onChange={(e)=> setEmail(e.target.value)} />
                         </div>
                         <div className="input">
                                 <img src={password_icon} alt="" />
-                                <input type="text" placeholder="Password" />
+                                <input type="password" placeholder="Password" value={password} onChange={(e)=> setPassword(e.target.value)}/>
                         </div>
                 </div>
                 {action ==="Sign Up"?<div></div>:<div className="forgot-password">Forgot your password? <span>Click here!</span></div>}

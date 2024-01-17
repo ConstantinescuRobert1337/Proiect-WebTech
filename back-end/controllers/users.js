@@ -42,12 +42,22 @@ const getUserById = async (req, res) => {
     }
 }
 const createUser = async (req, res) => {
-
-    const user = req.body;
-    await User.create(user);
-    res.status(201).send({ message: `Utilizatorul cu id-ul ${newUser.userId} a fost creat.` });
+    const { name, email, password, accountType } = req.body;
   
-};
+    try {
+      const newUser = await User.create({
+        username: name,
+        email,
+        password,
+        accountType
+      });
+  
+      res.status(201).json(newUser);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'A apărut o eroare la înregistrare.' });
+    }
+  };
 
 
 const updateUser = async (req, res) => {
